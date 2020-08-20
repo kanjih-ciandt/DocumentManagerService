@@ -6,6 +6,16 @@
 
   <ItemGroup>
     <Compile Remove="Controllers\WeatherForecastController.cs" />
+    <Compile Remove="Controllers\FileUploadingController.cs" />
+    <Compile Remove="WeatherForecast.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="SixLabors.ImageSharp" Version="1.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="UploadedFiles" />
   </ItemGroup>
 
 

@@ -1,11 +1,17 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using documentManagerService.Model;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System.Drawing;
+using Microsoft.Net.Http.Headers;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.PixelFormats;
 
 namespace documentManagerService.Controllers
 {
@@ -13,10 +19,7 @@ namespace documentManagerService.Controllers
     [Route("api/v1/[controller]")]
     public class DocumentController : ControllerBase
     {
-        private static readonly string[] Summaries = new[]
-        {
-            "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-        };
+        
 
         private readonly ILogger<DocumentController> _logger;
 
@@ -24,19 +27,7 @@ namespace documentManagerService.Controllers
         {
             _logger = logger;
         }
-
-        [HttpGet]
-        public IEnumerable<WeatherForecast> Get()
-        {
-            var rng = new Random();
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-                {
-                    Date = DateTime.Now.AddDays(index),
-                    TemperatureC = rng.Next(-20, 55),
-                    Summary = Summaries[rng.Next(Summaries.Length)]
-                })
-                .ToArray();
-        }
+        
         
         [HttpGet]
         [Route("files")]
@@ -94,6 +85,37 @@ namespace documentManagerService.Controllers
 
 
             return item;
+        }
+        
+        [Route("upload")]
+        [HttpPost]
+        [ProducesResponseType((int)HttpStatusCode.Created)]
+        public async Task<ActionResult<string>> UploadFileAsync([FromBody]FileItem fileItem)
+        {
+            if (fileItem.FileBase64 == null || fileItem.Name == null)
+            {
+                return BadRequest();
+            }
+
+            byte[] imageByteArray = Convert.FromBase64String(fileItem.FileBase64);
+            Image image = Image.Load<Rgba32>(imageByteArray);
+            
+            var uploadFolder = Path.Combine(Directory.GetCurrentDirectory(), "UploadedFiles");
+            
+            var finalPath = Path.Combine(uploadFolder, fileItem.Name);
+            
+            
+
+            try
+            {
+                await image.SaveAsync(finalPath);
+                return Ok($"File is uploaded Successfully");
+            }
+            catch (Exception e)
+            {
+                return BadRequest(e.Message);
+            }
+
         }
         
     }
