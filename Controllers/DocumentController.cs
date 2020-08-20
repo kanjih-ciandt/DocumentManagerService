@@ -5,11 +5,8 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using documentManagerService.Model;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using System.Drawing;
-using Microsoft.Net.Http.Headers;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.PixelFormats;
 
@@ -19,7 +16,7 @@ namespace documentManagerService.Controllers
     [Route("api/v1/[controller]")]
     public class DocumentController : ControllerBase
     {
-        
+
 
         private readonly ILogger<DocumentController> _logger;
 
@@ -104,8 +101,6 @@ namespace documentManagerService.Controllers
             
             var finalPath = Path.Combine(uploadFolder, fileItem.Name);
             
-            
-
             try
             {
                 await image.SaveAsync(finalPath);

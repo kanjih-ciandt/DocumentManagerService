@@ -18,5 +18,9 @@
     <Folder Include="UploadedFiles" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="UploadedFiles\testkanjdddddddi.jpg" />
+  </ItemGroup>
+
 
 </Project>
