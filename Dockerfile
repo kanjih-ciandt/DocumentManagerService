@@ -5,7 +5,7 @@ RUN dotnet restore
 COPY . .
 RUN dotnet publish -c release -o /app
 
-RUN mkdir -p /app/UploadedFiles
+RUN mkdir -p /files/UploadedFiles
 
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1
 WORKDIR /app

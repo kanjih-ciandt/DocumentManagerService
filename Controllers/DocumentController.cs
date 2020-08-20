@@ -97,7 +97,8 @@ namespace documentManagerService.Controllers
             byte[] imageByteArray = Convert.FromBase64String(fileItem.FileBase64);
             Image image = Image.Load<Rgba32>(imageByteArray);
             
-            var uploadFolder = Path.Combine(Directory.GetCurrentDirectory(), "UploadedFiles");
+            //var uploadFolder = Path.Combine(Directory.GetCurrentDirectory(), "UploadedFiles");
+            var uploadFolder = Path.Combine("/files/", "UploadedFiles");
             
             var finalPath = Path.Combine(uploadFolder, fileItem.Name);
             
