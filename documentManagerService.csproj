@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="documents" />
     <Folder Include="templates" />
     <Folder Include="UploadedFiles" />
   </ItemGroup>
