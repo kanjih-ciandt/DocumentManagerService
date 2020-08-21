@@ -46,7 +46,14 @@ kubectl apply -f deploy-documentManager.yaml
 
 
 ### Test API:
+Upload multipart:
+```shell
+curl --location --request POST 'http://localhost:3000/api/v1/document/uploadfile' \
+--header 'Content-Type: application/json' \
+--form 'files=@/Users/kanjih/Documents/kanji3x4.jpg'
+```
 
+Upload Base64:
 ```shell
 curl --location --request POST 'http://localhost:3000/api/v1/document/upload' \
 --header 'Content-Type: application/json' \

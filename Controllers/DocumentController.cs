@@ -5,6 +5,8 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using documentManagerService.Model;
+using documentManagerService.Services;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SixLabors.ImageSharp;
@@ -16,13 +18,16 @@ namespace documentManagerService.Controllers
     [Route("api/v1/[controller]")]
     public class DocumentController : ControllerBase
     {
+        
+        private readonly IFileService _fileService;
 
 
         private readonly ILogger<DocumentController> _logger;
 
-        public DocumentController(ILogger<DocumentController> logger)
+        public DocumentController(ILogger<DocumentController> logger, IFileService fileService)
         {
             _logger = logger;
+            _fileService = fileService;
         }
         
         
@@ -112,6 +117,24 @@ namespace documentManagerService.Controllers
                 return BadRequest(e.Message);
             }
 
+        }
+        
+        [Route("uploadfile")]
+        [HttpPost]
+        [ProducesResponseType((int)HttpStatusCode.Created)]
+        public IActionResult UploadFile([FromForm(Name = "files")] List<IFormFile> files)
+        {
+            try
+            {
+                //_fileService.SaveFile(files,  Path.Combine(Directory.GetCurrentDirectory(), "UploadedFiles"));
+                _fileService.SaveFile(files,  Path.Combine("/files/", "UploadedFiles"));
+
+                return Ok(new { files.Count, Size = FileService.SizeConverter(files.Sum(f => f.Length)) });
+            }
+            catch (Exception exception)
+            {
+                return BadRequest($"Error: {exception.Message}");
+            }
         }
         
     }
