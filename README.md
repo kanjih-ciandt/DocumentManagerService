@@ -12,26 +12,40 @@ To configure your local development machine, you must install docker-compose:
 
 ### Run the application
 
-### Run Locally (getting the code ): 
+#### Run Locally (getting the code ): 
 
 Start server (--build if needs to rebuild):
 ```shell
 docker-compose up --build
 ```
 
-### Run Locally (using the last version of the image): 
+#### Run Locally (using the last version of the image): 
 
 Start server (--build if needs to rebuild):
 ```shell
 docker run -it --rm -p 3000:80 --name documentManagerService hkanjih/docserver
 ```
 
-#### Read files:
+#### Run K8s Azure
+
+```shell
+kubectl apply -f pvc.yaml
+kubectl apply -f deploy-documentManager.yaml
+```
+
+#### Run K8s Onprem (Not tested yet....)
+
+```shell
+kubectl apply -f pvc-gluster.yaml
+kubectl apply -f deploy-documentManager.yaml
+```
+
+### Read files:
 
 [http://localhost:8080/images/](http://localhost:8080/images/)
 
 
-#### Test API:
+### Test API:
 
 ```shell
 curl --location --request POST 'http://localhost:3000/api/v1/document/upload' \
@@ -43,9 +57,3 @@ curl --location --request POST 'http://localhost:3000/api/v1/document/upload' \
 }'
 ```
 
-
-az aks create --resource-group documentManagerServiceResources --name documentManagerServiceCluster --node-count 1 --enable-addons http_application_routing --generate-ssh-keys
-
-az aks get-credentials --resource-group documentManagerServiceResources --name documentManagerServiceCluster
-
-kubectl get service documentmanagerservice --watch
